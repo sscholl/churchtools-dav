@@ -34,7 +34,7 @@ class kOOL extends AbstractBasic {
      * @param PDO $pdo
      * @param string $tableName The PDO table name to use
      */
-    public function __construct(\PDO $pdo, $tableName = 'ko_admin') {
+    public function __construct(\PDO $pdo, $tableName = 'cdb_person') {
 
         $this->pdo = $pdo;
         $this->tableName = $tableName;
@@ -52,13 +52,13 @@ class kOOL extends AbstractBasic {
     		
     	$suppliedPassword = md5($suppliedPassword);
 
-        $stmt = $this->pdo->prepare('SELECT login, password FROM '.$this->tableName.' WHERE login = ?');
+        $stmt = $this->pdo->prepare('SELECT email, password FROM '.$this->tableName.' WHERE email ="' . $suppliedUser . '"');
         $stmt->execute(array($suppliedUser));
         $result = $stmt->fetchAll();
-                
-
-        if (!count($result)) return FALSE;
-        return ($suppliedPassword==$result[0]['password']);        
+               echo ($suppliedUser); 
+        	exit("asdasd");
+//	if (!count($result)) return FALSE;
+        return true; //($suppliedPassword==$result[0]['password']);        
 
     }
 

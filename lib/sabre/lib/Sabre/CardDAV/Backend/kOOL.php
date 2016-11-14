@@ -35,7 +35,7 @@ class kOOL extends AbstractBackend {
      * @param string $addressBooksTableName
      * @param string $cardsTableName
      */
-    public function __construct(\PDO $pdo, $cardsTableName = 'ko_leute') {
+    public function __construct(\PDO $pdo, $cardsTableName = 'cdb_person') {
 
         $this->pdo = $pdo;
         $this->cardsTableName = $cardsTableName;
@@ -71,7 +71,7 @@ class kOOL extends AbstractBackend {
     * Get a user id for a kOOL login name
     */
     protected function getKoolUserId($loginName) {
-    	$stmt = $this->pdo->prepare('SELECT id FROM ko_admin WHERE login = ?');
+    	$stmt = $this->pdo->prepare('SELECT id FROM cdb_person WHERE email = ?');
         $stmt->execute(array($loginName));
     	$result = $stmt->fetchAll();
     	if (!count($result)) return;
@@ -105,7 +105,7 @@ class kOOL extends AbstractBackend {
 
     
     private function getLastModified($person) {
-    	$stmt = $this->pdo->prepare('SELECT date FROM ko_leute_changes WHERE leute_id = ?');
+    	$stmt = $this->pdo->prepare('SELECT letzteaenderung FROM cdb_person WHERE id = ?');
     	$stmt->execute(array($person['id']));
     	$result = $stmt->fetchAll();
     	if (!count($result)) return 0;
@@ -122,7 +122,7 @@ class kOOL extends AbstractBackend {
     }
     
     protected function retrieveAddresses($addressbookId, $id=null) {    	// get admin filters:
-    	$stmt = $this->pdo->prepare('SELECT id FROM ko_admin WHERE login = ?');
+    	$stmt = $this->pdo->prepare('SELECT id FROM cdb_person WHERE email = ?');
         $stmt->execute(array($addressbookId));
     	$result = $stmt->fetchAll();
     	apply_leute_filter(array(), $where, true, '', $result[0]['id']);

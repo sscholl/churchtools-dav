@@ -50,7 +50,7 @@ class kOOL extends AbstractBackend {
          * This property can be used to display the users' real name.
          */
         '{DAV:}displayname' => array(
-            'dbField' => 'login',
+            'dbField' => 'email',
         ),
 
         /**
@@ -62,13 +62,13 @@ class kOOL extends AbstractBackend {
          * collection.
          */
         '{http://sabredav.org/ns}vcard-url' => array(
-            'dbField' => 'login',
+            'dbField' => 'email',
         ),
         /**
          * This is the users' primary email-address.
          */
         '{http://sabredav.org/ns}email-address' => array(
-            'dbField' => 'login',
+            'dbField' => 'email',
         ),
     );
 
@@ -79,7 +79,7 @@ class kOOL extends AbstractBackend {
      * @param string $tableName
      * @param string $groupMembersTableName
      */
-    public function __construct(\PDO $pdo, $tableName = 'ko_admin', $groupMembersTableName = 'groupmembers') {
+    public function __construct(\PDO $pdo, $tableName = 'cdb_person', $groupMembersTableName = 'groupmembers') {
 
         $this->pdo = $pdo;
         $this->tableName = $tableName;
@@ -120,12 +120,12 @@ class kOOL extends AbstractBackend {
         while($row = $result->fetch(\PDO::FETCH_ASSOC)) {
 
             // Checking if the principal is in the prefix
-            list($rowPrefix) = DAV\URLUtil::splitPath('principals/'.$row['login']);
+            list($rowPrefix) = DAV\URLUtil::splitPath('principals/'.$row['email']);
             if ($rowPrefix !== $prefixPath) continue;
 
             $principal = array(
-                'uri' => 'principals/'.$row['login'],
-            	'email' => $row['login'].'@login.vmfds.de',
+                'uri' => 'principals/'.$row['email'],
+            	'email' => $row['emai'].'@login.vmfds.de',
             );
             foreach($this->fieldMap as $key=>$value) {
                 if ($row[$value['dbField']]) {
@@ -152,7 +152,7 @@ class kOOL extends AbstractBackend {
 
         $fields = array(
             'id',
-            'login',
+            'email',
         );
 
         foreach($this->fieldMap as $key=>$value) {
@@ -163,7 +163,7 @@ class kOOL extends AbstractBackend {
         $uri = substr($path, 11); 
         
         
-        $stmt = $this->pdo->prepare('SELECT '.implode(',', $fields).'  FROM '. $this->tableName . ' WHERE login = ?');
+        $stmt = $this->pdo->prepare('SELECT '.implode(',', $fields).'  FROM '. $this->tableName . ' WHERE email = ?');
         $stmt->execute(array($uri));
 
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -171,8 +171,8 @@ class kOOL extends AbstractBackend {
 
         $principal = array(
             'id'  => $row['id'],
-            'uri' => 'principals/'.$row['login'],
-            'email' => $row['login'].'@login.vmfds.de',
+            'uri' => 'principals/'.$row['email'],
+            'email' => $row['email'].'@login.vmfds.de',
         );
         foreach($this->fieldMap as $key=>$value) {
             if ($row[$value['dbField']]) {
@@ -309,19 +309,19 @@ class kOOL extends AbstractBackend {
      */
     public function searchPrincipals($prefixPath, array $searchProperties) {
 
-        $query = 'SELECT login FROM ' . $this->tableName . ' WHERE 1=1 ';
+        $query = 'SELECT email FROM ' . $this->tableName . ' WHERE 1=1 ';
         $values = array();
         foreach($searchProperties as $property => $value) {
 
             switch($property) {
 
                 case '{DAV:}displayname' :
-                    $query.=' AND login LIKE ?';
+                    $query.=' AND email LIKE ?';
                     $values[] = '%' . $value . '%';
                     break;
                 case '{http://sabredav.org/ns}email-address' :
                 	$tmp = explode('@', $value);
-                    $query.=' AND login LIKE ?';
+                    $query.=' AND email LIKE ?';
                     $values[] = '%' . $tmp[0] . '%';
                     break;
                 default :
@@ -338,10 +338,10 @@ class kOOL extends AbstractBackend {
         while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
 
             // Checking if the principal is in the prefix
-            list($rowPrefix) = DAV\URLUtil::splitPath('principals/'.$row['login']);
+            list($rowPrefix) = DAV\URLUtil::splitPath('principals/'.$row['email']);
             if ($rowPrefix !== $prefixPath) continue;
 
-            $principals[] = 'principals/'.$row['login'];
+            $principals[] = 'principals/'.$row['email'];
 
         }
 
