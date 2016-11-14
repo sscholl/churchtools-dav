@@ -7,7 +7,10 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 if (!defined('DEBUG_SELECT')) define ('DEBUG_SELECT', FALSE);
 
 // get kOOL config and api
-require_once('lib/sabre/kool_vcard.php');
+require_once('dav/churchtools_vcard.php');
+
+
+
 
 include_once('system/includes/start.php');
 require ("system/includes/constants.php");
@@ -66,20 +69,25 @@ function exception_error_handler($errno, $errstr, $errfile, $errline ) {
 set_error_handler("exception_error_handler", E_ERROR);
 
 
+  global $user;
+  $user["id"] = 1;
+include_once ("system/churchdb/churchdb_db.php");
+var_dump(churchdb_getAllowedPersonData());
 
 // Autoloader
-require_once ('lib/sabre/vendor/autoload.php');
+require_once ('dav/lib/sabre/vendor/autoload.php');
+require_once ('dav/backends/DAVAuthBackend.php');
+require_once ('dav/backends/DAVACLPrincipalBackend.php');
+require_once ('dav/backends/CardDAVBackend.php');
 
 // Backends
-$authBackend      = new Sabre\DAV\Auth\Backend\kOOL($pdo);
-$principalBackend = new Sabre\DAVACL\PrincipalBackend\kOOL($pdo);
-$carddavBackend   = new Sabre\CardDAV\Backend\kOOL($pdo);
-//$caldavBackend    = new Sabre\CalDAV\Backend\PDO($pdo);
+$authBackend      = new Sabre\DAV\Auth\Backend\ChurchTools($pdo);
+$principalBackend = new Sabre\DAVACL\PrincipalBackend\ChurchTools($pdo);
+$carddavBackend   = new Sabre\CardDAV\Backend\ChurchTools($pdo);
 
 // Setting up the directory tree //
 $nodes = array(
     new Sabre\DAVACL\PrincipalCollection($principalBackend),
-//    new Sabre\CalDAV\CalendarRootNode($authBackend, $caldavBackend),
     new Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend),
 );
 

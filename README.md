@@ -1,11 +1,12 @@
-# What is kOOLDAV
+# What is churchtools-dav
 
-kOOLDAV is aiming to be a drop-in CardDAV server for kOOL. It allows users to synchronize their devices and addressbook with an existing kOOL install. Currently, it is read-only.
+churchtools-dav is aiming to be a drop-in CardDAV server for ChurchTools 3. It allows users to synchronize their devices and addressbook with an existing kOOL install. Currently, it is read-only and in development.
 
 ### Feature list:
 
-* Supports browsing CardDAV addressbook while honoring user rights in kOOL.
+* Supports browsing CardDAV addressbook while honoring user rights in ChurchTools.
 * Based on popular [SabreDAV server](http://code.google.com/p/sabredav)
+* [Development Notes](http://sabre.io/dav/caldav-carddav-integration-guide/)
 
 ### What could become of this ...
 
@@ -15,9 +16,8 @@ kOOLDAV is aiming to be a drop-in CardDAV server for kOOL. It allows users to sy
 
 ### Current state
 
-* At the moment, kOOLDAV is read-only, i.e. it only supports reading data out of kOOL into another database/device. 
-* This is still quite a hack.
+* read-only
 
 ### Install
 
-To install, it should be sufficient to drop the contents of this repository right into your main kOOL folder.
+To install, it should be sufficient to drop the contents of this repository right into your main ChurchTools folder.
