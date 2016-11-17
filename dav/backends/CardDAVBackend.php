@@ -128,12 +128,14 @@ class ChurchTools extends AbstractBackend {
     * own method
     */
     protected function retrieveAddresses($addressbookId, $id=null) {        // get admin filters:
-        $stmt = $this->pdo->prepare('SELECT id, cmsuserid, vorname, name, email, telefonhandy, plz, strasse, ort from cdb_person where cmsuserid != ?');
+        $select = 'SELECT id, cmsuserid, vorname, name, email, telefonhandy, plz, strasse, ort from cdb_person where cmsuserid != ?';
+        if ($id) $select .= 'AND (id='.$id.') ';
+
+        $stmt = $this->pdo->prepare($select);
         $stmt->execute(array($addressbookId));
         $result = $stmt->fetchAll();
 
-        //TODO
-        if ($id) $where = 'AND (id='.$id.') '.$where;
+        if ($id && $result[0]) $result = $result[0];
 
         return $result;
     }

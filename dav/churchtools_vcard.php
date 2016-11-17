@@ -32,13 +32,13 @@ $vCardProperties = array(
 	'version' => '2.1',
 	'defaultCountry' => 'CH',
 	'phone' =>	array(
-		'PREF;HOME;VOICE' => 'telp',
-		'PREF;WORK;VOICE' => 'telg',
-		'PREF;CELL;VOICE' => 'natel',
+		'PREF;HOME;VOICE' => 'telefonprivat',
+		'PREF;WORK;VOICE' => 'telefongeschaeftlich',
+		'PREF;CELL;VOICE' => 'telefonhandy',
 		'PREF;FAX' => 'fax',
 	),
 	'address' => array(
-		'HOME;POSTAL' => array('adresse', 'plz', 'ort', 'land'),
+		'HOME;POSTAL' => array('strasse', 'plz', 'ort', 'land'),
 	),
 	'url' => array(
 		'WORK' => 'web',
@@ -55,20 +55,20 @@ $vCardProperties = array(
 		'O' => array('_' => array('sep' => ' '), 0 => 'firm', 1 => 'department'),
 
 		// name
-		'N' => array('nachname', 'vorname', null, 'anrede', null),
-		'FN' => array('_' => array('sep' => ' '), 'anrede', 'vorname', 'nachname'),
+		'N' => array('name', 'vorname', null, 'anrede', null),
+		'FN' => array('_' => array('sep' => ' '), 'anrede', 'vorname', 'name'),
 
 		// birthday
 		'BDAY' => array('geburtsdatum'),
 
 		// phone:
-		'TEL;HOME;VOICE' => array('telp'),
-		'TEL;CELL;VOICE' => array('natel'),
-		'TEL;WORK;VOICE' => array('telg'),
+		'TEL;HOME;VOICE' => array('telefonprivat'),
+		'TEL;CELL;VOICE' => array('telefonhandy'),
+		'TEL;WORK;VOICE' => array('telefongeschaeftlich'),
 		'TEL;WORK;FAX' => array('fax'),
 
 		// address:
-		'ADR;HOME;POSTAL' => array(null, null, 'adresse', 'ort', null, 'plz', 'land'),
+		'ADR;HOME;POSTAL' => array(null, null, 'strasse', 'ort', null, 'plz', 'land'),
 		// url
 		'URL;WORK' => array('web'),
 
@@ -77,12 +77,12 @@ $vCardProperties = array(
 
 
 		// modified:
-		'REV' => array('lastchange'),
+		'REV' => array('letzteaenderung'),
 	),
 	'format' => array(
-		'telp' => array('phone', 'DE'),
-		'telg' => array('phone', 'DE'),
-		'natel' => array('phone', 'DE'),
+		'telefonprivat' => array('phone', 'DE'),
+		'telefongeschaeftlich' => array('phone', 'DE'),
+		'telefonhandy' => array('phone', 'DE'),
 		'fax' => array('phone', 'DE'),
 		'geburtsdatum' => array('date', null),
 		'lastchange' => array('tzdate', 'UTC'),
@@ -148,8 +148,8 @@ class vCard {
 	}
 
 	// override field names through config
-	// e.g. $vCardProperties['override']['telp']='telg';
-	//      would use the telg field instead of telp.
+	// e.g. $vCardProperties['override']['telefonprivat']='telefongeschaeftlich';
+	//      would use the telefongeschaeftlich field instead of telefonprivat.
 	function _o($name) {
 		return ($this->config['override'][$name] ? $this->config['override'][$name] : $name);
 	}
