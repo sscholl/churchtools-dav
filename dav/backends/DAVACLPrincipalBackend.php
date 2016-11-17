@@ -7,17 +7,31 @@ use Sabre\DAV\MkCol;
 use Sabre\HTTP\URLUtil;
 
 /**
- * kOOL principal backend
+ * ChurchTools principal backend
  *
  *
  * This backend assumes all principals are in a single collection. The default collection
  * is 'principals/', but this can be overriden.
  *
- * @copyright Copyright (C) 2013 Volksmission Freudenstadt.
- * @author Christoph Fischer (chris@toph.de)
- * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
+ * @copyright Copyright (C) fruux GmbH (https://fruux.com/)
+ * @author Evert Pot (http://evertpot.com/)
+ * @license http://sabre.io/license/ Modified BSD License
  */
-class ChurchTools extends AbstractBackend {
+class ChurchTools extends AbstractBackend implements CreatePrincipalSupport {
+
+    /**
+     * PDO table name for 'principals'
+     *
+     * @var string
+     */
+    public $tableName = 'cdb_person';
+
+    /**
+     * PDO table name for 'group members'
+     *
+     * @var string
+     */
+    public $groupMembersTableName = 'groupmembers';
 
     /**
      * pdo
@@ -27,64 +41,35 @@ class ChurchTools extends AbstractBackend {
     protected $pdo;
 
     /**
-     * PDO table name for 'principals'
-     *
-     * @var string
-     */
-    protected $tableName;
-
-    /**
-     * PDO table name for 'group members'
-     *
-     * @var string
-     */
-    protected $groupMembersTableName;
-
-    /**
      * A list of additional fields to support
      *
      * @var array
      */
-    protected $fieldMap = array(
+    protected $fieldMap = [
 
         /**
          * This property can be used to display the users' real name.
          */
-        '{DAV:}displayname' => array(
-            'dbField' => 'email',
-        ),
+        '{DAV:}displayname' => [
+            'dbField' => 'displayname',
+        ],
 
-        /**
-         * This property is actually used by the CardDAV plugin, where it gets
-         * mapped to {http://calendarserver.orgi/ns/}me-card.
-         *
-         * The reason we don't straight-up use that property, is because
-         * me-card is defined as a property on the users' addressbook
-         * collection.
-         */
-        '{http://sabredav.org/ns}vcard-url' => array(
-            'dbField' => 'email',
-        ),
         /**
          * This is the users' primary email-address.
          */
-        '{http://sabredav.org/ns}email-address' => array(
+        '{http://sabredav.org/ns}email-address' => [
             'dbField' => 'email',
-        ),
-    );
+        ],
+    ];
 
     /**
      * Sets up the backend.
      *
      * @param PDO $pdo
-     * @param string $tableName
-     * @param string $groupMembersTableName
      */
-    public function __construct(\PDO $pdo, $tableName = 'cdb_person', $groupMembersTableName = 'groupmembers') {
+    function __construct(\PDO $pdo) {
 
         $this->pdo = $pdo;
-        $this->tableName = $tableName;
-        $this->groupMembersTableName = $groupMembersTableName;
 
     }
 

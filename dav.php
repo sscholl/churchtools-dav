@@ -6,7 +6,7 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 // set some constants to avoid exceptions
 if (!defined('DEBUG_SELECT')) define ('DEBUG_SELECT', FALSE);
 
-// get kOOL config and api
+// get ChurchTools config and api
 require_once('dav/churchtools_vcard.php');
 
 
@@ -69,10 +69,9 @@ function exception_error_handler($errno, $errstr, $errfile, $errline ) {
 set_error_handler("exception_error_handler", E_ERROR);
 
 
-  global $user;
-  $user["id"] = 1;
-include_once ("system/churchdb/churchdb_db.php");
-var_dump(churchdb_getAllowedPersonData());
+// load user data by ChurchTools Business Logic
+//global $user;
+//include_once ("system/churchdb/churchdb_db.php");
 
 // Autoloader
 require_once ('dav/lib/sabre/vendor/autoload.php');
@@ -106,7 +105,7 @@ $server->setBaseUri(parse_url($BASE_URL, PHP_URL_PATH).basename(__FILE__).'/');
 
 
 // Plugins
-//$server->addPlugin(new Sabre\DAV\Auth\Plugin($authBackend,'kOOL CardDAV Server'));
+//$server->addPlugin(new Sabre\DAV\Auth\Plugin($authBackend,'ChurchTools CardDAV Server'));
 $server->addPlugin(new Sabre\DAV\Browser\Plugin());
 //$server->addPlugin(new Sabre\CalDAV\Plugin());
 $server->addPlugin(new Sabre\CardDAV\Plugin());

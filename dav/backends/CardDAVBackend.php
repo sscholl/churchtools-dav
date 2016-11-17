@@ -67,7 +67,7 @@ class ChurchTools extends AbstractBackend {
     }
 
     /**
-    * Get a user id for a kOOL login name
+    * Get a user id for a ChurchTools login name
     */
     protected function getKoolUserId($loginName) {
         $stmt = $this->pdo->prepare('SELECT id FROM cdb_person WHERE email = ?');
@@ -161,7 +161,7 @@ class ChurchTools extends AbstractBackend {
      */
     public function getCards($addressbookId) {
         // we completely ignore $addressbookId here, since there is always only ONE
-        // addressbook available (the one from kOOL).
+        // addressbook available (the one from ChurchTools).
         $p = $this->retrieveAddresses($addressbookId);
 
         $o = array();
@@ -203,6 +203,7 @@ class ChurchTools extends AbstractBackend {
      */
     public function getCard($addressBookId, $cardUri) {
         $person = $this->retrieveAddresses($addressBookId, $cardUri);
+        var_dump($person);
         $mod = $this->getLastModified($person);
         if (!$mod) $mod = strtotime($person['crdate']);
 

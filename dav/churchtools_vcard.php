@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  (c) 2013 Christoph Fischer (chris@toph.de)
-*  Based on the original kOOL vCard implementation
+*  Based on the original ChurchTools vCard implementation
 *  (c) 2003-2012 Renzo Lauper (renzo@churchtool.org)
 *  All rights reserved
 *
@@ -16,7 +16,7 @@
 *  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-*  kOOL is distributed in the hope that it will be useful,
+*  ChurchTools is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *  GNU General Public License for more details.
@@ -222,7 +222,7 @@ class vCard {
 	function writeCard() {
 		global $ko_path;
 
-		$filename = $ko_path.'download/kOOL_'.date('Ymd_His').'.vcf';
+		$filename = $ko_path.'download/ChurchTools_'.date('Ymd_His').'.vcf';
 
 		$fp = @fopen($filename, 'w');
 		fputs($fp, $this->output);

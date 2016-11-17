@@ -3,7 +3,7 @@
 namespace Sabre\DAV\Auth\Backend;
 
 /**
- * This is an authentication backend that uses kOOL manage passwords.
+ * This is an authentication backend that uses ChurchTools manage passwords.
  *
  * @copyright Copyright (C) 2013 Volksmission Freudenstadt
  * @author Christoph Fischer (chris@toph.de)
