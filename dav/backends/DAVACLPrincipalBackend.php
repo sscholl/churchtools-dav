@@ -17,7 +17,7 @@ use Sabre\HTTP\URLUtil;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class ChurchTools extends AbstractBackend implements CreatePrincipalSupport {
+class ChurchTools extends AbstractBackend {
 
     /**
      * PDO table name for 'principals'
@@ -51,7 +51,7 @@ class ChurchTools extends AbstractBackend implements CreatePrincipalSupport {
          * This property can be used to display the users' real name.
          */
         '{DAV:}displayname' => [
-            'dbField' => 'displayname',
+            'dbField' => 'email',
         ],
 
         /**
@@ -255,7 +255,7 @@ class ChurchTools extends AbstractBackend implements CreatePrincipalSupport {
         foreach ($searchProperties as $property => $value) {
             switch ($property) {
                 case '{DAV:}displayname' :
-                    $column = "displayname";
+                    $column = "email";
                     break;
                 case '{http://sabredav.org/ns}email-address' :
                     $column = "email";
